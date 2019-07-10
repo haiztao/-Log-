@@ -14,29 +14,22 @@ class RunLogVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "日志"
-        let dataLogPath = NSHomeDirectory() + "/Documents/logData.txt"
-        let fileM = FileManager()
-        if !fileM.fileExists(atPath: dataLogPath) {
-            try! ("" as NSString).write(toFile: dataLogPath, atomically: true, encoding: String.Encoding.utf8.rawValue)
-        }
-        let dataLog = try! NSMutableString(contentsOfFile: dataLogPath, encoding: String.Encoding.utf8.rawValue)
-        self.logTV.text = dataLog as String
 
-//        print(self.logTV.text!)
+        self.logTV.text = HTLogTool.readLogInfo()
+
     }
 
     @IBAction func cleanLog(_ sender: AnyObject) {
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: UIAlertAction.Style.cancel) { (action: UIAlertAction!) -> Void in}
+        let cancelAction = UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: UIAlertAction.Style.cancel) { (action: UIAlertAction!) -> Void in};
         let sureAction = UIAlertAction(title: NSLocalizedString("确定", comment: ""), style: UIAlertAction.Style.default) { (action: UIAlertAction!) -> Void in
-            let dataLogPath = NSHomeDirectory() + "/Documents/logData.txt"
-            try! ("" as NSString).write(toFile: dataLogPath, atomically: true, encoding: String.Encoding.utf8.rawValue)
-            self.logTV.text = ""
+            HTLogTool.clearLogInfo();
+            self.logTV.text = "";
         }
-        let alert = UIAlertController(title: NSLocalizedString("提示", comment: ""), message: NSLocalizedString("删除日志", comment: ""), preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(cancelAction)
-        alert.addAction(sureAction)
-        present(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: NSLocalizedString("提示", comment: ""), message: NSLocalizedString("删除日志", comment: ""), preferredStyle: UIAlertController.Style.alert);
+        alert.addAction(cancelAction);
+        alert.addAction(sureAction);
+        present(alert, animated: true, completion: nil);
 
     }
     override func didReceiveMemoryWarning() {
